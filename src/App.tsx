@@ -4,6 +4,7 @@ import AuthPage from "./pages/AuthPage";
 import AppLayout from "./layout/AppLayout";
 import ProfilePage from "./pages/ProfilePage";
 import UpdatePass from "./components/auth/UpdatePass";
+import CabinsPage from "./pages/CabinsPage";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
           <Route element={<AppLayout />}>
             <Route index element={<HomePage />} />
             <Route path="/:username" element={<ProfilePage />} />
+            <Route path="/cabins" element={<CabinsPage />} />
 
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/auth/updatePass" element={<UpdatePass />} />
