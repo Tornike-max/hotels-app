@@ -14,7 +14,7 @@ const SettingsPage = () => {
     );
 
   return (
-    <div className="max-w-[2200px] w-full flex justify-center items-center flex-col gap-4 sm:gap-8 pt-10">
+    <div className="max-w-[2200px] w-full flex justify-center items-center flex-col gap-4 sm:gap-8 pt-2 md:pt-10">
       <SettingsHeader />
       <SettingsForm settingsData={settingsData} />
     </div>

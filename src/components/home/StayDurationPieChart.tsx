@@ -1,57 +1,35 @@
-import { PieChart, Pie, ResponsiveContainer, Tooltip } from "recharts";
+import { PieChart, Pie, ResponsiveContainer, Tooltip, Cell } from "recharts";
 import { useGetSalesData } from "../../queryHooks/useGetSalesData";
-import { Spinner } from "@nextui-org/react";
-
-const data02 = [
-  {
-    name: "Group A",
-    value: 2400,
-  },
-  {
-    name: "Group B",
-    value: 4567,
-  },
-  {
-    name: "Group C",
-    value: 1398,
-  },
-  {
-    name: "Group D",
-    value: 9800,
-  },
-  {
-    name: "Group E",
-    value: 3908,
-  },
-  {
-    name: "Group F",
-    value: 4800,
-  },
-];
+import { getRandomColor } from "../../ui/getRandomColor";
+import PieChartSkelleton from "./PieChartSkelleton";
 
 const StayDurationPieChart = () => {
-  const { data: salesData, isPending } = useGetSalesData();
+  const { data: salesData, isPending } = useGetSalesData("stays");
 
   if (isPending)
     return (
       <div className="w-full h-full flex items-center justify-center">
-        <Spinner />
+        <PieChartSkelleton />
       </div>
     );
 
   const data = salesData?.map((sale) => {
     return {
-      duration: sale.numNights,
+      value: sale.numNights,
+      name: sale.cabin.name,
+      color: getRandomColor(),
     };
   });
 
-  console.log(data);
+  const tooltipFormatter = (value: string) => {
+    return `Cabin ${value} Nights.`;
+  };
 
   return (
-    <ResponsiveContainer width={730} height={250}>
+    <ResponsiveContainer width={"100%"} height={250}>
       <PieChart>
         <Pie
-          data={data02}
+          data={data}
           dataKey="value"
           nameKey="name"
           cx="50%"
@@ -59,8 +37,12 @@ const StayDurationPieChart = () => {
           innerRadius={85}
           outerRadius={110}
           paddingAngle={3}
-        />
-        <Tooltip />
+        >
+          {data?.map((item) => (
+            <Cell fill={item.color} stroke={item.color} key={item.name} />
+          ))}
+        </Pie>
+        <Tooltip formatter={tooltipFormatter} />
       </PieChart>
     </ResponsiveContainer>
   );

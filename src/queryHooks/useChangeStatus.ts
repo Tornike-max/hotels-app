@@ -18,6 +18,8 @@ export const useChangeStatus = () => {
     }) => checkInAndOut(documentId, value, isPaid, hasBreakfast),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      queryClient.invalidateQueries({ queryKey: ["today-activity"] });
+      queryClient.invalidateQueries({ queryKey: ["sales"] });
       toast.success("Status Changed Successfully");
     },
     onError: () => {

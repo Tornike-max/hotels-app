@@ -8,6 +8,9 @@ export const useDeleteBooking = () => {
     mutationFn: (documentId: string) => deleteBooking(documentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      queryClient.invalidateQueries({ queryKey: ["today-activity"] });
+      queryClient.invalidateQueries({ queryKey: ["sales"] });
+
       toast.success("Booking deleted successfully");
     },
     onError: () => {

@@ -9,6 +9,9 @@ export const useCreateBooking = () => {
     mutationFn: (newBooking: BookingCreateType) => createBookingApi(newBooking),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      queryClient.invalidateQueries({ queryKey: ["today-activity"] });
+      queryClient.invalidateQueries({ queryKey: ["sales"] });
+
       toast.success("Booking created successfully");
     },
     onError: () => {

@@ -12,7 +12,7 @@ import { Spinner } from "@nextui-org/react";
 import { formatDate } from "../../ui/formatDate";
 
 const LineChart = () => {
-  const { data: salesData, isPending } = useGetSalesData();
+  const { data: salesData, isPending } = useGetSalesData("sales");
 
   if (isPending)
     return (
@@ -29,12 +29,10 @@ const LineChart = () => {
     };
   });
 
-  console.log(data);
-
   return (
     <div className="w-full flex justify-center items-center flex-col gap-2 bg-black rounded-md py-3 px-4">
       <h1 className="text-white text-xl sm:text-2xl font-semibold">Sales</h1>
-      <ResponsiveContainer width={730} height={250}>
+      <ResponsiveContainer width={"100%"} height={250}>
         <AreaChart
           width={730}
           height={250}

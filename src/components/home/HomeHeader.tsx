@@ -21,14 +21,14 @@ const HomeHeader = () => {
     }
   };
   return (
-    <div className="w-full flex justify-between items-center bg-black rounded-md py-2 px-4">
+    <div className="w-full flex justify-between flex-col sm:flex-row gap-4 sm:gap-0 items-center bg-black rounded-md py-2 px-4">
       <h1 className="text-white text-xl sm:text-2xl font-semibold">
         Dashboard
       </h1>
       <div className="flex items-center gap-2 py-1 px-2 bg-gray-950 rounded-md">
         <button
           onClick={() => handleChangeDays("7")}
-          className={`py-1 px-2 rounded-md hover:bg-primary-600  text-white ${
+          className={`py-1 px-2 rounded-md hover:bg-primary-600  text-white text-xs sm:text-base ${
             getParams === "7" ? "bg-primary-600" : "bg-none"
           }  font-semibold`}
         >
@@ -36,7 +36,7 @@ const HomeHeader = () => {
         </button>
         <button
           onClick={() => handleChangeDays("30")}
-          className={`py-1 px-2 rounded-md hover:bg-primary-600  text-white ${
+          className={`py-1 px-2 rounded-md hover:bg-primary-600  text-white text-xs sm:text-base ${
             getParams === "30" ? "bg-primary-600" : "bg-none"
           }  font-semibold`}
         >
@@ -44,7 +44,7 @@ const HomeHeader = () => {
         </button>
         <button
           onClick={() => handleChangeDays("90")}
-          className={`py-1 px-2 rounded-md hover:bg-primary-600  text-white ${
+          className={`py-1 px-2 rounded-md hover:bg-primary-600  text-white text-xs sm:text-base ${
             getParams === "90" ? "bg-primary-600" : "bg-none"
           }  font-semibold`}
         >

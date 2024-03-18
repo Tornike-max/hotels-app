@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useGetUserContext } from "../context/useGetUserContext";
 import { useGetSettings } from "../queryHooks/useGetSettings";
 import { useCreateBooking } from "../queryHooks/useCreateBooking";
+import { useNavigate } from "react-router-dom";
 
 type BookingCreateType = {
   numNights: number;
@@ -20,6 +21,7 @@ type BookingCreateType = {
 };
 
 const BookingCreateFormPage = () => {
+  const navigate = useNavigate();
   const { cabinIds, isCabinIdsPending } = useGetCabinIds();
   const { settingsData, isSettingsPending } = useGetSettings();
   const { userFromDB } = useGetUserContext();
@@ -56,7 +58,11 @@ const BookingCreateFormPage = () => {
       numNights: Number(data.numNights),
       observations: data.observations,
     };
-    createBooking(newBooking);
+    createBooking(newBooking, {
+      onSuccess: () => {
+        navigate("/");
+      },
+    });
   };
 
   console.log(cabinIds);

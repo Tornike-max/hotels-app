@@ -26,12 +26,12 @@ const SettingsForm = ({
     console.log(settingData);
   };
   return (
-    <div className="w-full flex justify-center items-center px-4">
+    <div className="w-full flex justify-center items-center px-4 ">
       <form
         onBlur={handleSubmit(onSubmit)}
         className="max-w-3xl w-full flex justify-center items-center flex-col gap-4 sm:gap-6 bg-black rounded-md py-10 px-8"
       >
-        <div className="w-full flex items-center justify-between fslex-col sm:flex-row gap-2">
+        <div className="w-full flex items-center justify-between flex-col sm:flex-row gap-2">
           <label className="text-base sm:text-lg text-white">
             Minimum nights/booking
           </label>
