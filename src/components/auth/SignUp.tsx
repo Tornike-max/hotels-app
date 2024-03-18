@@ -113,7 +113,7 @@ export default function SignUp() {
           className="w-full text-white text-sm text-end px-4 sm:px-8 py-1"
           onClick={() => handleNavigate("login")}
         >
-          Already have an account? <span className="font-bold">Click here</span>
+          Already have an account? <span className="font-bold">Log in</span>
         </button>
       </form>
     </div>

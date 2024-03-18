@@ -7,6 +7,9 @@ import { Input, Spinner } from "@nextui-org/react";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
 import { useGetUserContext } from "../../context/useGetUserContext";
+import { FcGoogle } from "react-icons/fc";
+import { FaSquareFacebook } from "react-icons/fa6";
+import { account } from "../../appwriteConfig/appwrite";
 
 export default function Login() {
   const { register, handleSubmit, reset } = useForm<LoginType>();
@@ -32,6 +35,17 @@ export default function Login() {
   const handleNavigate = (value: string) => {
     searchParams.set("auth-type", value);
     setSearchParams(searchParams);
+  };
+
+  const handleGoogleAuth = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    account.createOAuth2Session(
+      "google",
+      "http://localhost:5173",
+      "http://localhost:5173/auth"
+    );
   };
   return (
     <div className="w-full flex justify-center items-center mt-20">
@@ -80,13 +94,27 @@ export default function Login() {
             onClick={() => handleNavigate("signup")}
           >
             You don't have an account?{" "}
-            <span className="font-bold">Click here</span>
+            <span className="font-bold">Sign up</span>
           </button>
           <button
             className="w-full text-white text-sm text-end px-4 sm:px-8 py-1"
             onClick={() => handleNavigate("forgot")}
           >
             Forget Password? <span className="font-bold">Click here</span>
+          </button>
+        </div>
+        <p className="text-center text-white text-xl font-bold">OR</p>
+        <div className="w-full flex justify-center items-center pt-2 gap-2">
+          <button
+            onClick={(e) => handleGoogleAuth(e)}
+            className="flex items-center gap-1 py-1 px-2 border-1 rounded-md text-white hover:bg-white hover:text-black duration-75 transition-all"
+          >
+            <FcGoogle className="text-3xl " />
+            <span className="text-base ">Log in with Google</span>
+          </button>
+          <button className="flex items-center gap-1 py-1 px-2 border-1 rounded-md text-white hover:bg-white hover:text-black duration-75 transition-all">
+            <FaSquareFacebook className="text-3xl text-blue-500 " />
+            <span className="text-base ">Log in with Facebook</span>
           </button>
         </div>
       </form>
