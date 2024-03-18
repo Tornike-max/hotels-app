@@ -7,6 +7,7 @@ import {
   ModalFooter,
   ModalHeader,
   Spinner,
+  Textarea,
 } from "@nextui-org/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CabinEditType } from "../../types/types";
@@ -39,17 +40,12 @@ const EditCabinModal = ({
     reset();
   };
 
-  if (isCabinPending)
-    return (
-      <div className="w-full flex justify-center items-center pt-40">
-        <Spinner size="lg" />
-      </div>
-    );
+  if (isCabinPending) return null;
 
   console.log(data);
 
   return (
-    <>
+    <div>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
         <ModalContent>
           {(onClose) => (
@@ -57,35 +53,41 @@ const EditCabinModal = ({
               <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <ModalBody>
+                  <Textarea
+                    label="Description"
+                    placeholder="Enter Description"
+                    variant="bordered"
+                    defaultValue={data?.description}
+                    {...register("description")}
+                  />
                   <Input
                     autoFocus
                     label="Name"
                     placeholder="Enter Cabin Name"
                     variant="bordered"
+                    defaultValue={data?.name}
                     {...register("name")}
                   />
-                  <Input
-                    label="Description"
-                    placeholder="Enter Description"
-                    variant="bordered"
-                    {...register("description")}
-                  />
+
                   <Input
                     label="Discount"
                     placeholder="Enter Discount Value"
                     variant="bordered"
+                    defaultValue={data?.discount}
                     {...register("discount")}
                   />
                   <Input
                     label="Capacity"
                     placeholder="Enter Max Capacity"
                     variant="bordered"
+                    defaultValue={data?.maxCapacity}
                     {...register("maxCapacity")}
                   />
                   <Input
                     label="Price"
                     placeholder="Enter New Price"
                     variant="bordered"
+                    defaultValue={data?.regularPrice}
                     {...register("regularPrice")}
                   />
                 </ModalBody>
@@ -107,7 +109,7 @@ const EditCabinModal = ({
           )}
         </ModalContent>
       </Modal>
-    </>
+    </div>
   );
 };
 

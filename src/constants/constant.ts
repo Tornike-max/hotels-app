@@ -4,10 +4,6 @@ export const paths = [
     label: "Home",
   },
   {
-    path: "dashboard",
-    label: "Dashboard",
-  },
-  {
     path: "bookings",
     label: "Bookings",
   },
@@ -16,12 +12,12 @@ export const paths = [
     label: "Cabins",
   },
   {
-    path: "customers",
-    label: "Customers",
+    path: "user",
+    label: "Dashboard",
   },
   {
-    path: "auth",
-    label: "Login",
+    path: "settings",
+    label: "Settings",
   },
 ];
 
@@ -64,5 +60,43 @@ export const filterMethods = [
   {
     label: "With Discount",
     value: "with-discount",
+  },
+];
+
+export const filterBookingMethods = [
+  {
+    label: "All",
+    value: "all",
+  },
+  {
+    label: "Checked out",
+    value: "checked-out",
+  },
+  {
+    label: "Checked in",
+    value: "checked-in",
+  },
+  {
+    label: "Unconfirmed",
+    value: "unconfirmed",
+  },
+];
+
+export const bookingSortOptions = [
+  {
+    label: "Sort By Date (recent first)",
+    value: "date-asc",
+  },
+  {
+    label: "Sort By Date (earlier first)",
+    value: "date-desc",
+  },
+  {
+    label: "Sort By Amount (low First)",
+    value: "amount-asc",
+  },
+  {
+    label: "Sort By Amount (high First)",
+    value: "amount-desc",
   },
 ];

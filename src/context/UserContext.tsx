@@ -1,13 +1,16 @@
+// Import dependencies and custom hooks
 import { createContext, useEffect, useState } from "react";
 import { Models } from "appwrite";
 import { getUser } from "../api/data";
 import toast from "react-hot-toast";
 
+// Define initial state and context type
 const initialState: UserContextType = {
   user: null,
   isLoading: true,
   userFromDB: null,
   isAuthenticated: false,
+  setIsAuthenticated: () => {}, // Default value for setIsAuthenticated
 };
 
 type UserContextType = {
@@ -15,10 +18,13 @@ type UserContextType = {
   isLoading: boolean;
   userFromDB: Models.Document[] | null;
   isAuthenticated: boolean;
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>; // Function type
 };
 
+// Create UserContext
 export const UserContext = createContext<UserContextType>(initialState);
 
+// UserContextProvider component
 export default function UserContextProvider({
   children,
 }: {
@@ -45,7 +51,11 @@ export default function UserContextProvider({
         if (userData) {
           setUserFromDB(userData.userFromDB);
           setUser(userData.authUser);
-          setIsAuthenticated(true);
+          if (localStorage.getItem("cookieFallback")) {
+            setIsAuthenticated(true);
+          } else {
+            setIsAuthenticated(false);
+          }
         }
       } catch (error) {
         toast.error("error while getting data");
@@ -64,11 +74,13 @@ export default function UserContextProvider({
     }
   }, [userFromDB]);
 
+  // Provide context values
   const values = {
     user: isAuthenticated ? user : null,
     userFromDB: isAuthenticated ? userFromDB : null,
     isLoading: isLoading,
     isAuthenticated: isAuthenticated,
+    setIsAuthenticated: setIsAuthenticated,
   };
 
   return <UserContext.Provider value={values}>{children}</UserContext.Provider>;

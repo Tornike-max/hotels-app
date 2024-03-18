@@ -54,6 +54,7 @@ const ProfileModalChangePhone = ({
         label="Phone"
         placeholder="Enter your Number"
         variant="faded"
+        defaultValue={userFromDB && userFromDB[0].phone}
         {...register("phone")}
       />
       <Input

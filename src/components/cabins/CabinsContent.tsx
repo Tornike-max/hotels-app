@@ -1,22 +1,22 @@
-import { Spinner } from "@nextui-org/react";
 import { useGetCabins } from "../../queryHooks/useGetCabins";
 import Cabin from "./Cabin";
+import TableSkeleton from "../../ui/TableSkeleton";
+import { Button } from "@nextui-org/button";
+import { useDisclosure } from "@nextui-org/react";
+import CreateNewCabinModal from "./CreateNewCabinModal";
 
 const CabinsContent = () => {
   const { cabinsData, isPending } = useGetCabins();
+  const { isOpen, onClose, onOpen, onOpenChange } = useDisclosure();
 
-  if (isPending)
-    return (
-      <div className="w-full flex justify-center items-center py-40">
-        <Spinner size="lg" />
-      </div>
-    );
+  if (isPending) return <TableSkeleton />;
+
   return (
-    <div className="max-w-5xl w-full">
+    <div className="max-w-5xl w-full h-full mb-10 px-4 overflow-y-auto">
       <table className="table-auto w-full text-white">
-        <thead>
-          <tr className="text-sm sm:text-base md:text-lg lg:text-xl font-bold">
-            <th className="px-4 py-2">Cabin Name</th>
+        <thead className="border border-white bg-black">
+          <tr className="text-sm sm:text-base md:text-lg lg:text-xl font-bold ">
+            <th className="px-4 py-2 hidden sm:flex">Cabin Name</th>
             <th className="px-4 py-2">Capacity</th>
             <th className="px-4 py-2">Price</th>
             <th className="px-4 py-2">Discount</th>
@@ -29,6 +29,18 @@ const CabinsContent = () => {
           ))}
         </tbody>
       </table>
+      <div className="w-full flex items-center justify-center py-4">
+        <Button variant="shadow" color="primary" onPress={onOpen}>
+          Create Cabin
+        </Button>
+        {isOpen && (
+          <CreateNewCabinModal
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            onClose={onClose}
+          />
+        )}
+      </div>
     </div>
   );
 };

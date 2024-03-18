@@ -1,6 +1,10 @@
 import { ID, Query } from "appwrite";
-import { appwriteConfig, databases } from "../../appwriteConfig/appwrite";
-import { CabinEditType, CabinType } from "../../types/types";
+import {
+  appwriteConfig,
+  databases,
+  storage,
+} from "../../appwriteConfig/appwrite";
+import { CabinCreateType, CabinEditType, CabinType } from "../../types/types";
 
 export const getCabins = async (filterVal: string, sortValue: string) => {
   const query: string[] | undefined = [];
@@ -47,6 +51,22 @@ export const getCabins = async (filterVal: string, sortValue: string) => {
     return promise.documents;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getCabinsIds = async () => {
+  try {
+    const promise = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.cabinsCollectionId,
+      [Query.select(["$id", "name", "imageUrl", "regularPrice"])]
+    );
+
+    if (!promise) throw new Error("Error while getting cabin Ids");
+
+    return promise.documents;
+  } catch (error) {
+    console.error(error);
   }
 };
 
@@ -129,5 +149,36 @@ export const editCabinApi = async (
     return promise;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const createNewCabin = async (newData: CabinCreateType) => {
+  console.log(newData);
+  try {
+    const createCabinFile = await storage.createFile(
+      appwriteConfig.storageId,
+      ID.unique(),
+      newData.imageUrl
+    );
+
+    const getFile = storage.getFilePreview(
+      appwriteConfig.storageId,
+      createCabinFile.$id
+    );
+
+    const promise = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.cabinsCollectionId,
+      ID.unique(),
+      {
+        ...newData,
+        imageUrl: getFile.href,
+        hush: "LEHLk~WB2yk8pyo0adR*.7kCMdnj",
+      }
+    );
+    if (!promise) throw new Error("Error occured");
+    return promise;
+  } catch (error) {
+    throw Error("Error while create new Cabin");
   }
 };

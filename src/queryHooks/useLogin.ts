@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 export const useLogin = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { mutate: loginUser, isPending } = useMutation({
+  const { mutateAsync: loginUser, isPending } = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       userLogin(email, password),
     onSuccess: () => {

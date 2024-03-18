@@ -1,3 +1,4 @@
+import React, { memo, useEffect, useState } from "react";
 import { Models } from "appwrite";
 import {
   HiOutlineBars3,
@@ -6,7 +7,6 @@ import {
   HiOutlineTrash,
 } from "react-icons/hi2";
 import { MdOutlineHorizontalRule } from "react-icons/md";
-
 import { formatCurrency } from "../../ui/formatCurrency";
 import {
   Popover,
@@ -18,15 +18,24 @@ import {
 import { useDuplicateCabin } from "../../queryHooks/useDuplicateCabin";
 import { useDeleteCabin } from "../../queryHooks/useDeleteCabin";
 import EditCabinModal from "./EditCabinModal";
+import { useCallback } from "react";
+import { Blurhash } from "react-blurhash";
 
-const Cabin = ({ cabin }: { cabin: Models.Document }) => {
+const Cabin = memo(({ cabin }: { cabin: Models.Document }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
   const { duplicate, isPending } = useDuplicateCabin();
   const { deleteSelectedCabin, isPending: isDeleting } = useDeleteCabin();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  console.log(cabin);
+  useEffect(() => {
+    const image = new Image();
+    image.onload = () => {
+      setImageLoaded(true);
+    };
+    image.src = cabin.imageUrl;
+  }, [cabin.imageUrl]);
 
-  const handleDuplicate = () => {
+  const handleDuplicate = useCallback(() => {
     if (!cabin) return;
     const duplicatedData = {
       name: `Copy of ${cabin.name}`,
@@ -38,19 +47,30 @@ const Cabin = ({ cabin }: { cabin: Models.Document }) => {
       hush: cabin.hush,
     };
     duplicate(duplicatedData);
-    console.log("click");
-  };
+  }, [cabin, duplicate]);
 
   const handleDelete = (documentId: string) => {
     if (!documentId) return;
-
     deleteSelectedCabin(documentId);
   };
+
   return (
     <>
-      <tr key={cabin.$id}>
-        <td className="border px-4 py-2 flex gap-2 items-center">
-          <img src={cabin.imageUrl} className="w-20 h-16" />
+      <tr className="text-xs sm:text-sm md:text-base">
+        <td className="border hidden px-4 py-2 sm:flex gap-2 items-center">
+          {!imageLoaded && (
+            <Blurhash
+              hash={cabin.hush}
+              width={80}
+              height={64}
+              resolutionX={32}
+              resolutionY={32}
+              punch={1}
+            />
+          )}
+          {imageLoaded && (
+            <img src={cabin.imageUrl} className="w-16 h-14 sm:w-20 sm:h-16" />
+          )}
           {cabin.name}
         </td>
         <td className="border px-4 py-2">
@@ -60,24 +80,25 @@ const Cabin = ({ cabin }: { cabin: Models.Document }) => {
           {formatCurrency(cabin.regularPrice)}
         </td>
         <td className="border px-4 py-2">
-          {cabin.discount === 0 ? (
+          {cabin.discount === 0 || cabin.discount === null ? (
             <MdOutlineHorizontalRule />
           ) : (
             formatCurrency(cabin.discount)
           )}
         </td>
-        <td className="border  px-4 py-2 ">
+        <td className="border px-4 py-2 ">
           <Popover placement="left-start" color="foreground">
             <PopoverTrigger>
-              <button className="capitalize">
+              <button className="capitalize border-1 border-black rounded-md p-1 hover:border-white ">
                 <HiOutlineBars3 className="cursor-pointer text-white" />
               </button>
             </PopoverTrigger>
+
             <PopoverContent>
               <div className="px-2 py-2 flex flex-col justify-center items-center gap-2">
                 <button
                   onClick={handleDuplicate}
-                  className="text-small font-bold w-full rounded-md flex items-center justify-start gap-2 px-2 py-2 hover:bg-gray-700"
+                  className=" font-bold w-full rounded-md flex items-center justify-start gap-2 px-2 py-2 hover:bg-gray-700"
                 >
                   {isPending ? (
                     <Spinner size="sm" />
@@ -122,6 +143,6 @@ const Cabin = ({ cabin }: { cabin: Models.Document }) => {
       </tr>
     </>
   );
-};
+});
 
 export default Cabin;

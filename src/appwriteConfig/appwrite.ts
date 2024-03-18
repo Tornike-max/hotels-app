@@ -12,6 +12,7 @@ export const appwriteConfig = {
   cabinsCollectionId: import.meta.env
     .VITE_APPWRITE_CABINS_COLLECTION_ID as string,
   guestsCollectionId: import.meta.env.VITE_APPWRITE_GUESTS_COLLECTION_ID,
+  settingsCollectionId: import.meta.env.VITE_APPWRITE_SETTINGS_COLLECTION_ID,
   storageId: import.meta.env.VITE_APPWRITE_STORAGE_ID,
 };
 

@@ -53,6 +53,7 @@ const ProfileModalChangeLocation = ({
         label="Location"
         placeholder="Enter your Location"
         variant="faded"
+        defaultValue={userFromDB && userFromDB[0].location}
         {...register("location")}
       />
 

@@ -91,6 +91,15 @@ export const saveUserToDB = async ({
   }
 };
 
+export const logoutUser = async () => {
+  try {
+    const promise = await account.deleteSession("current");
+    if (!promise) return;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getUser = async () => {
   try {
     const promise = await account.get();

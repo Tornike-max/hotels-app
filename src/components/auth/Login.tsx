@@ -6,20 +6,26 @@ import { Button } from "@nextui-org/button";
 import { Input, Spinner } from "@nextui-org/react";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
+import { useGetUserContext } from "../../context/useGetUserContext";
 
 export default function Login() {
   const { register, handleSubmit, reset } = useForm<LoginType>();
   const { loginUser, isPending } = useLogin();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { setIsAuthenticated } = useGetUserContext();
 
-  const onSubmit: SubmitHandler<LoginType> = (data) => {
+  const onSubmit: SubmitHandler<LoginType> = async (data) => {
     console.log(data);
     if (!data.email || !data.password) {
       toast.error("Please fill all the fields");
       return;
     }
 
-    loginUser(data);
+    await loginUser(data, {
+      onSuccess: () => {
+        setIsAuthenticated(true);
+      },
+    });
     reset();
   };
 

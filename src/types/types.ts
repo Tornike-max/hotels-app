@@ -1,3 +1,5 @@
+import { Key } from "react";
+
 export interface LoginType {
   email: string;
   password: string;
@@ -27,9 +29,42 @@ export type CabinEditType = {
   discount: number;
   description: string;
 };
-// export interface EditProfileTypes {
-//   phone?: string;
-//   email?: string;
-//   location?: string;
-//   password: string;
-// }
+
+export type BookingImagesType = {
+  $id: Key;
+  cabin: {
+    imageUrl: string;
+    name: string;
+  };
+  cabinPrice: number;
+};
+
+export type SettingsType = {
+  minNights?: number;
+  maxNights?: number;
+  maxGuests?: number;
+  breakfastPrice?: number;
+};
+
+export type BookingCreateType = {
+  hasBreakfast: boolean;
+  isPain: boolean;
+  user: string | null;
+  status: string;
+  extrasPrice: string | number;
+  cabinPrice: string | number;
+  totalPrice: string | number;
+  numGuests: number;
+  numNights: number;
+  observations: string;
+  cabin: string | null;
+};
+
+export type CabinCreateType = {
+  name: string;
+  maxCapacity: number;
+  regularPrice: number;
+  discount: number;
+  description: string;
+  imageUrl: File;
+};

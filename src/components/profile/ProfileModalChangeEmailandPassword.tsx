@@ -52,6 +52,7 @@ export default function ProfileModalChangeEmailandPassword({
         label="Email"
         placeholder="Enter your email"
         variant="faded"
+        defaultValue={userFromDB && userFromDB[0].email}
         {...register("email")}
       />
       <Input

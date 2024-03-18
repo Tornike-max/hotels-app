@@ -5,6 +5,10 @@ import AppLayout from "./layout/AppLayout";
 import ProfilePage from "./pages/ProfilePage";
 import UpdatePass from "./components/auth/UpdatePass";
 import CabinsPage from "./pages/CabinsPage";
+import BookingsPage from "./pages/BookingsPage";
+import BookingDetails from "./pages/BookingDetails";
+import SettingsPage from "./pages/SettingsPage";
+import BookingCreateFormPage from "./pages/BookingCreateFormPage";
 
 export default function App() {
   return (
@@ -13,8 +17,19 @@ export default function App() {
         <Routes>
           <Route element={<AppLayout />}>
             <Route index element={<HomePage />} />
-            <Route path="/:username" element={<ProfilePage />} />
+            <Route path="/profile/:userId" element={<ProfilePage />} />
             <Route path="/cabins" element={<CabinsPage />} />
+            <Route path="/bookings" element={<BookingsPage />} />
+            <Route
+              path="/bookings/create"
+              element={<BookingCreateFormPage />}
+            />
+
+            <Route
+              path="/booking/details/:bookingId"
+              element={<BookingDetails />}
+            />
+            <Route path="/settings" element={<SettingsPage />} />
 
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/auth/updatePass" element={<UpdatePass />} />
