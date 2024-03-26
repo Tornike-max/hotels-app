@@ -3,6 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { SettingsType } from "../../types/types";
 import { Models } from "appwrite";
 import useUpdateSettings from "../../queryHooks/useUpdateSettings";
+import { useGetUserContext } from "../../context/useGetUserContext";
 
 const SettingsForm = ({
   settingsData,
@@ -11,6 +12,7 @@ const SettingsForm = ({
 }) => {
   const { updateSettings } = useUpdateSettings();
   const { register, handleSubmit } = useForm<SettingsType>();
+  const { isAuthenticated } = useGetUserContext();
 
   const onSubmit: SubmitHandler<SettingsType> = (data) => {
     const settingData = {
@@ -37,6 +39,7 @@ const SettingsForm = ({
           </label>
           <Input
             type="number"
+            disabled={!isAuthenticated}
             label="Minimum nights"
             defaultValue={settingsData?.minNights}
             {...register("minNights")}
@@ -49,6 +52,7 @@ const SettingsForm = ({
           </label>
           <Input
             type="number"
+            disabled={!isAuthenticated}
             label="Maximum nights"
             defaultValue={settingsData?.maxNights}
             {...register("maxNights")}
@@ -61,6 +65,7 @@ const SettingsForm = ({
           </label>
           <Input
             type="number"
+            disabled={!isAuthenticated}
             label="Maximum guests"
             defaultValue={settingsData?.maxGuests}
             {...register("maxGuests")}
@@ -73,6 +78,7 @@ const SettingsForm = ({
           </label>
           <Input
             type="number"
+            disabled={!isAuthenticated}
             label="Breakfast price"
             defaultValue={settingsData?.breakfastPrice}
             {...register("breakfastPrice")}

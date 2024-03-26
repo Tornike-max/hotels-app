@@ -5,8 +5,7 @@ import { Button } from "@nextui-org/button";
 import { Input, Spinner } from "@nextui-org/react";
 import toast from "react-hot-toast";
 import { useSignup } from "../../queryHooks/useSignup";
-import { useSearchParams } from "react-router-dom";
-import { useLogin } from "../../queryHooks/useLogin";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function SignUp() {
   const {
@@ -17,11 +16,10 @@ export default function SignUp() {
     getValues,
   } = useForm<SignupType>();
   const { signupUser, isPending } = useSignup();
-  const { loginUser } = useLogin();
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<SignupType> = async (data) => {
-    console.log(data);
     if (!data.email || !data.password || !data.password1) {
       toast.error("Please fill all the fields");
       return;
@@ -29,7 +27,7 @@ export default function SignUp() {
 
     const signup = await signupUser(data);
     if (signup) {
-      loginUser({ email: data.email, password: data.password });
+      navigate("/auth");
       reset();
     }
   };
@@ -105,6 +103,7 @@ export default function SignUp() {
             disabled={isPending}
             variant="shadow"
             color="default"
+            className="w-full"
           >
             {isPending ? <Spinner size="sm" /> : "Register"}
           </Button>

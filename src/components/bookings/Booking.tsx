@@ -21,22 +21,27 @@ import { useNavigate } from "react-router-dom";
 import { useDeleteBooking } from "../../queryHooks/useDeleteBooking";
 import { useChangeStatus } from "../../queryHooks/useChangeStatus";
 import toast from "react-hot-toast";
+import { useGetUserContext } from "../../context/useGetUserContext";
 
 const Booking = ({ booking }: { booking: Models.Document }) => {
   const { deleteBookingMutation, isDeleting } = useDeleteBooking();
   const { changeStatus, isChanging } = useChangeStatus();
   const navigate = useNavigate();
+  const { isAuthenticated } = useGetUserContext();
 
   const handleCheckin = (value: string) => {
-    if (value === "checked-in" && !booking?.isPain) {
-      navigate(`/booking/details/${booking.$id}`);
-      toast.error("Please Pay Your Bill");
-      return;
+    if (isAuthenticated) {
+      if (value === "checked-in" && !booking?.isPain) {
+        navigate(`/booking/details/${booking.$id}`);
+        toast.error("Please Pay Your Bill");
+        return;
+      }
+      changeStatus({ documentId: booking.$id, value: value });
+    } else {
+      navigate("/auth");
     }
-    changeStatus({ documentId: booking.$id, value: value });
   };
 
-  console.log(booking);
   return (
     <>
       <tr className="text-xs sm:text-sm md:text-base text-center">
@@ -48,23 +53,23 @@ const Booking = ({ booking }: { booking: Models.Document }) => {
           #{booking?.cabin?.name}
         </td>
         <td className="border px-4 py-2 font-semibold sm:font-normal text-sm">
-          <p>{booking?.user.name}</p>
-          <p>{booking?.user.email}</p>
+          <p>{booking?.user?.name}</p>
+          <p>{booking?.user?.email}</p>
         </td>
         <td className="border px-4 py-2 font-semibold sm:font-normal text-sm">
-          {formatDate(booking.$createdAt)}
+          {formatDate(booking?.$createdAt)}
         </td>
         <td className={`border px-4 py-2 font-semibold sm:font-normal`}>
           <Chip
             className={`py-1 px-2 text-center capitalize text-sm rounded-lg ${
-              booking.status === "checked-in"
+              booking?.status === "checked-in"
                 ? "bg-green-500 text-white"
-                : booking.status === "checked-out"
+                : booking?.status === "checked-out"
                 ? "bg-rose-600 text-white"
                 : "bg-primary-500 text-white"
             }`}
           >
-            {booking.status}
+            {booking?.status}
           </Chip>
         </td>
         <td className="border px-4 py-2 font-semibold sm:font-normal ">
@@ -81,7 +86,7 @@ const Booking = ({ booking }: { booking: Models.Document }) => {
             <PopoverContent>
               <div className="px-2 py-2 flex flex-col justify-center items-center gap-2">
                 <button
-                  onClick={() => navigate(`/booking/details/${booking.$id}`)}
+                  onClick={() => navigate(`/booking/details/${booking?.$id}`)}
                   className=" font-bold w-full rounded-md flex items-center justify-start gap-2 px-2 py-2 hover:bg-gray-700"
                 >
                   <HiOutlineEye className="text-lg" />
@@ -121,7 +126,11 @@ const Booking = ({ booking }: { booking: Models.Document }) => {
                 )}
 
                 <button
-                  onClick={() => deleteBookingMutation(booking.$id)}
+                  onClick={() =>
+                    isAuthenticated
+                      ? deleteBookingMutation(booking.$id)
+                      : navigate("/auth")
+                  }
                   className="text-small font-bold w-full rounded-md flex items-center justify-start gap-2 px-2 py-2 hover:bg-gray-700"
                 >
                   {isDeleting ? (

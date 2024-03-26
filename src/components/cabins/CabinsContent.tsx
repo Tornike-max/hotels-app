@@ -4,8 +4,12 @@ import TableSkeleton from "../../ui/TableSkeleton";
 import { Button } from "@nextui-org/button";
 import { useDisclosure } from "@nextui-org/react";
 import CreateNewCabinModal from "./CreateNewCabinModal";
+import { useGetUserContext } from "../../context/useGetUserContext";
+import { useNavigate } from "react-router-dom";
 
 const CabinsContent = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useGetUserContext();
   const { cabinsData, isPending } = useGetCabins();
   const { isOpen, onClose, onOpen, onOpenChange } = useDisclosure();
 
@@ -30,7 +34,11 @@ const CabinsContent = () => {
         </tbody>
       </table>
       <div className="w-full flex items-center justify-center py-4">
-        <Button variant="shadow" color="primary" onPress={onOpen}>
+        <Button
+          variant="shadow"
+          color="primary"
+          onPress={isAuthenticated ? onOpen : () => navigate("/auth")}
+        >
           Create Cabin
         </Button>
         {isOpen && (

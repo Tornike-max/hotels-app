@@ -9,7 +9,7 @@ import { useSearchParams } from "react-router-dom";
 import { useGetUserContext } from "../../context/useGetUserContext";
 import { FcGoogle } from "react-icons/fc";
 import { FaSquareFacebook } from "react-icons/fa6";
-import { account } from "../../appwriteConfig/appwrite";
+import { googleAuth } from "../../api/data";
 
 export default function Login() {
   const { register, handleSubmit, reset } = useForm<LoginType>();
@@ -18,7 +18,6 @@ export default function Login() {
   const { setIsAuthenticated } = useGetUserContext();
 
   const onSubmit: SubmitHandler<LoginType> = async (data) => {
-    console.log(data);
     if (!data.email || !data.password) {
       toast.error("Please fill all the fields");
       return;
@@ -37,15 +36,12 @@ export default function Login() {
     setSearchParams(searchParams);
   };
 
-  const handleGoogleAuth = (
+  const handleGoogleAuth = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    account.createOAuth2Session(
-      "google",
-      "http://localhost:5173",
-      "http://localhost:5173/auth"
-    );
+
+    await googleAuth();
   };
   return (
     <div className="w-full flex justify-center items-center mt-20">
@@ -84,6 +80,7 @@ export default function Login() {
             disabled={isPending}
             variant="shadow"
             color="default"
+            className="w-full"
           >
             {isPending ? <Spinner size="sm" /> : "Login"}
           </Button>

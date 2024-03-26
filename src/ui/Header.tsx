@@ -43,19 +43,19 @@ const Header = () => {
             <PopoverTrigger>
               <button className="flex items-center gap-1 sm:gap-2">
                 <Avatar
-                  src={userFromDB && userFromDB[0].imageUrl}
+                  src={userFromDB && userFromDB[0]?.imageUrl}
                   className="w-8 h-8 sm:w-10 sm:h-10 "
                 />
                 <div className="flex flex-col justify-center items-start text-xs text-white">
-                  <p>{userFromDB && userFromDB[0].name}</p>
-                  <p>{userFromDB && userFromDB[0].email}</p>
+                  <p>{userFromDB && userFromDB[0]?.name}</p>
+                  <p>{userFromDB && userFromDB[0]?.email}</p>
                 </div>
               </button>
             </PopoverTrigger>
             <PopoverContent className="bg-gray-800 w-full shadow-xl">
               <div className="px-2 py-2 flex flex-col justify-center items-center gap-2">
                 <Link
-                  to={`/profile/${userFromDB && userFromDB[0].$id}`}
+                  to={`/profile/${userFromDB && userFromDB[0]?.$id}`}
                   className="w-full py-1 px-2 hover:bg-primary-500 rounded-md flex items-center gap-1 text-lg"
                 >
                   <HiOutlineUser />

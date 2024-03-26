@@ -11,10 +11,7 @@ export const paths = [
     path: "cabins",
     label: "Cabins",
   },
-  {
-    path: "user",
-    label: "Dashboard",
-  },
+
   {
     path: "settings",
     label: "Settings",

@@ -18,6 +18,7 @@ export default function AppLayout() {
     await logout();
     setIsAuthenticated(false);
   };
+
   return (
     <div className="max-w-[2200px] w-full min-h-screen bg-gray-950 flex flex-col lg:flex-row">
       {/* Sidebar (Only on larger screens) */}
@@ -32,14 +33,18 @@ export default function AppLayout() {
                 className="cursor-pointer"
                 src={userFromDB && userFromDB[0]?.imageUrl}
               />
-              <div className="w-full flex flex-col justify-center items-start text-white">
-                <span className="text-sm">
-                  {userFromDB && userFromDB[0]?.name}
-                </span>
-                <span className="text-xs text-slate-500">
-                  {userFromDB && userFromDB[0]?.email}
-                </span>
-              </div>
+              {userFromDB && userFromDB[0]?.imageUrl ? (
+                <div className="w-full flex flex-col justify-center items-start text-white">
+                  <span className="text-sm">
+                    {userFromDB && userFromDB[0]?.name}
+                  </span>
+                  <span className="text-xs text-slate-500">
+                    {userFromDB && userFromDB[0]?.email}
+                  </span>
+                </div>
+              ) : (
+                <Spinner size="sm" />
+              )}
             </Link>
           ) : (
             <h1 className="text-lg sm:text-xl md:text-2xl text-white font-bold text-center py-4">

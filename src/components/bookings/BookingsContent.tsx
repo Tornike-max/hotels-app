@@ -2,11 +2,13 @@ import { Button, Spinner } from "@nextui-org/react";
 import { useGetBookings } from "../../queryHooks/useGetBookings";
 import Booking from "./Booking";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useGetUserContext } from "../../context/useGetUserContext";
 
 const BookingsContent = () => {
   const { bookingsData, isPending } = useGetBookings();
   const [searchParams, setSearchParams] = useSearchParams();
   const curPage = searchParams.get("page") || "1";
+  const { isAuthenticated } = useGetUserContext();
 
   const navigate = useNavigate();
   if (isPending)
@@ -34,15 +36,19 @@ const BookingsContent = () => {
 
   return (
     <div className="max-w-5xl w-full h-full px-4 overflow-y-auto ">
-      <div className="w-full flex justify-start items-center py-4">
-        <Button
-          onClick={() => navigate("/bookings/create")}
-          variant="shadow"
-          color="primary"
-        >
-          Create new booking
-        </Button>
-      </div>
+      {
+        <div className="w-full flex justify-start items-center py-4">
+          <Button
+            onClick={() =>
+              navigate(isAuthenticated ? "/bookings/create" : "/auth")
+            }
+            variant="shadow"
+            color="primary"
+          >
+            Create new booking
+          </Button>
+        </div>
+      }
       <table className="table-auto w-full text-white ">
         <thead className="border-1 border-white ">
           <tr className="text-sm sm:text-base md:text-lg lg:text-xl font-bold bg-black">

@@ -48,9 +48,11 @@ export default function UserContextProvider({
       setIsLoading(true);
       try {
         const userData = await getUser();
+
         if (userData) {
           setUserFromDB(userData.userFromDB);
           setUser(userData.authUser);
+
           if (localStorage.getItem("cookieFallback")) {
             setIsAuthenticated(true);
           } else {

@@ -18,6 +18,37 @@ export const userLogin = async (email: string, password: string) => {
   }
 };
 
+export const googleAuth = async () => {
+  try {
+    const promise = account.createOAuth2Session(
+      "google",
+      "http://localhost:5173",
+      "http://localhost:5173/auth"
+    );
+
+    if (!promise) throw new Error("No user ");
+    const getUser = await account.getSession("current");
+    const user = await account.get();
+
+    if (getUser.providerAccessToken) {
+      const imageUrl = avatars.getInitials(user.name);
+      await saveUserToDB({
+        email: user.email,
+        name: user.name,
+        phone: user?.phone,
+        authUserId: getUser.$id,
+        imageUrl: imageUrl,
+        username: user.email.slice(0, user.email.lastIndexOf("@")),
+        location: "",
+      });
+    }
+
+    return promise;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const userSingup = async (
   fullname: string,
   email: string,
@@ -103,6 +134,7 @@ export const logoutUser = async () => {
 export const getUser = async () => {
   try {
     const promise = await account.get();
+
     if (!promise) throw new Error("Error while getting current account");
 
     const getUserFromdb = await databases.listDocuments(
@@ -112,7 +144,10 @@ export const getUser = async () => {
     );
     if (!getUser) throw new Error("Error");
 
-    return { authUser: promise, userFromDB: getUserFromdb.documents };
+    return {
+      authUser: promise,
+      userFromDB: getUserFromdb.documents,
+    };
   } catch (error) {
     console.error(error);
   }
